@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>抽奖模拟器</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="app">
+    <header class="app-header">
+      <h1>🎡 抽奖模拟器</h1>
+      <p class="subtitle">填写奖项 → 系统自动等分 → 拖拽圆点微调概率 → 开始抽奖</p>
+    </header>
+
+    <div class="layout">
+      <!-- 圆盘区 -->
+      <section class="wheel-panel">
+        <div class="wheel-wrap">
+          <canvas id="wheel"></canvas>
+        </div>
+        <div id="result" class="result"></div>
+        <button id="spinBtn" class="spin-btn">开始抽奖</button>
+      </section>
+
+      <!-- 列表区 -->
+      <section class="list-panel">
+        <div class="add-row">
+          <input id="newPrize" type="text" placeholder="输入奖项名称，回车添加…" maxlength="20" autocomplete="off">
+          <button id="addBtn" class="add-btn">添加</button>
+        </div>
+        <ul id="prizeList" class="prize-list"></ul>
+        <div class="list-actions">
+          <button id="equalBtn" class="ghost-btn">平均分配</button>
+          <button id="clearBtn" class="ghost-btn danger">清空</button>
+          <p class="hint">💡 拖动圆盘边缘的金色圆点可微调相邻奖项概率；点击左侧 <b>📷</b> 可为奖项上传图片，图片会自动适配扇区大小显示在圆盘上。</p>
+        </div>
+      </section>
+    </div>
+  </div>
+
+  <script src="script.js"></script>
+</body>
+</html>
