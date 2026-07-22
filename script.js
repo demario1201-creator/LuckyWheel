@@ -13,9 +13,17 @@ const HANDLE_R = R * 0.93;          // 拖拽圆点所在半径
 const MIN_SWEEP = TAU * 0.01;       // 单个扇区最小角度（1%）
 const GRAB_THRESH = 0.10;           // 抓取边界的容差（弧度）
 
+// 抽奖进行时的「直播文案」，按时间均分三段依次显示
+const CHANT_LINES = [
+  '中奖概率倍儿高',
+  '奖品也嘛倍儿好',
+  '手机钞票，奔驰金条，还有大金劳'
+];
+
 const canvas = document.getElementById('wheel');
 const ctx = canvas.getContext('2d');
 const resultEl = document.getElementById('result');
+const chantEl = document.getElementById('chant');
 const spinBtn = document.getElementById('spinBtn');
 const listEl = document.getElementById('prizeList');
 const newPrizeInput = document.getElementById('newPrize');
@@ -412,6 +420,10 @@ function spin() {
   ensureAudio();
   updateSpinBtn();
   lastWinner = null;
+  // 抽奖开始：清掉上一次的结果与直播文案
+  resultEl.classList.remove('show');
+  resultEl.textContent = '';
+  chantEl.textContent = '';
   draw();
 
   const idx = pickWinner();
@@ -439,6 +451,15 @@ function spin() {
     rotation = startRot + delta * e;
     draw();
 
+    // 直播文案：把抽奖时长均分为三段，依次显示三句话
+    const ci = Math.min(CHANT_LINES.length - 1, Math.floor(t * CHANT_LINES.length));
+    if (chantEl.textContent !== CHANT_LINES[ci]) {
+      chantEl.textContent = CHANT_LINES[ci];
+      chantEl.classList.remove('pop');
+      void chantEl.offsetWidth;   // 重启动画
+      chantEl.classList.add('pop');
+    }
+
     const cur = sectorUnderPointer();
     if (cur !== lastSector) { tick(700 + Math.floor(Math.random() * 200)); lastSector = cur; }
 
@@ -448,7 +469,8 @@ function spin() {
       spinning = false;
       lastWinner = idx;
       draw();
-      showResult(idx);
+      chantEl.textContent = '';      // 文案消失
+      showResult(idx);               // 中奖提示再出现
       updateSpinBtn();
     }
   }
