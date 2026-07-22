@@ -298,27 +298,14 @@ function draw() {
 
 function drawPointer() {
   ctx.save();
-  // 指针 — 温暖红，粗体感
-  ctx.fillStyle = '#e63946';
-  ctx.shadowColor = 'rgba(0,0,0,0.2)';
+  // 指针改为手指图标（向下指），落在圆盘顶部指向中奖扇区
+  ctx.font = '40px sans-serif';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.shadowColor = 'rgba(0,0,0,0.25)';
   ctx.shadowBlur = 4;
   ctx.shadowOffsetY = 2;
-  ctx.beginPath();
-  ctx.moveTo(CX, CY - R + 16);
-  ctx.lineTo(CX - 14, CY - R - 18);
-  ctx.lineTo(CX + 14, CY - R - 18);
-  ctx.closePath();
-  ctx.fill();
-
-  // 指针内圈高光
-  ctx.shadowBlur = 0; ctx.shadowOffsetY = 0;
-  ctx.beginPath();
-  ctx.moveTo(CX, CY - R + 20);
-  ctx.lineTo(CX - 7, CY - R - 8);
-  ctx.lineTo(CX + 7, CY - R - 8);
-  ctx.closePath();
-  ctx.fillStyle = 'rgba(255,255,255,0.25)';
-  ctx.fill();
+  ctx.fillText('👇', CX, CY - R - 2);
   ctx.restore();
 }
 
@@ -479,7 +466,7 @@ function spin() {
 
 function showResult(idx) {
   const p = prizes[idx];
-  resultEl.textContent = p.lose ? '得，没中' : `🎉 恭喜抽中：${p.label}`;
+  resultEl.textContent = p.lose ? '完，没中' : `🎉 恭喜抽中：${p.label}`;
   resultEl.classList.remove('show');
   void resultEl.offsetWidth;   // 重启动画
   resultEl.classList.add('show');
